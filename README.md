@@ -62,9 +62,16 @@ juny21c/
    - Windows: https://www.python.org/downloads/ 에서 다운로드
    - 설치할 때 "Add Python to PATH" 체크박스 꼭 선택하세요!
 
-2. **Anthropic API 키** (AI를 사용하려면 필요해요)
-   - https://console.anthropic.com/ 에 가입하고 무료 크레딧을 받으세요
-   - API Keys 메뉴에서 키를 복사해두세요
+2. **AI API 키** (둘 중 하나만 선택하세요!)
+
+   **🌟 옵션 1: Google Gemini (무료, 초보자 추천!)**
+   - https://aistudio.google.com/app/apikey 에서 무료로 발급
+   - 구글 계정으로 로그인만 하면 바로 사용 가능!
+   - 매달 무료 할당량 제공
+
+   **💎 옵션 2: Anthropic Claude (유료, 더 정확함)**
+   - https://console.anthropic.com/ 에서 가입
+   - 사용량에 따라 요금 발생
 
 ### 실행 방법
 
@@ -121,10 +128,18 @@ copy .env.example .env
 cp .env.example .env
 ```
 
-그 다음 `.env` 파일을 메모장으로 열고, 아까 복사한 API 키를 넣어요:
+그 다음 `.env` 파일을 메모장으로 열고, 사용할 AI를 선택하세요:
 
+**🌟 Google Gemini 사용 (무료, 추천!):**
 ```
-ANTHROPIC_API_KEY=여기에_복사한_API_키_붙여넣기
+API_PROVIDER=gemini
+GOOGLE_API_KEY=여기에_복사한_Gemini_API_키_붙여넣기
+```
+
+**💎 Anthropic Claude 사용 (유료):**
+```
+API_PROVIDER=claude
+ANTHROPIC_API_KEY=여기에_복사한_Claude_API_키_붙여넣기
 ```
 
 저장하고 닫기!

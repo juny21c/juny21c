@@ -9,7 +9,21 @@ from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from face_reader import FaceReader
+from dotenv import load_dotenv
+
+# 환경 변수 로드
+load_dotenv()
+
+# API 제공자 선택 (환경 변수에서 읽기, 기본값: claude)
+API_PROVIDER = os.getenv("API_PROVIDER", "claude").lower()
+
+# 선택한 API에 따라 적절한 FaceReader 임포트
+if API_PROVIDER == "gemini":
+    from face_reader_gemini import FaceReaderGemini as FaceReader
+    print("🌟 Google Gemini API를 사용합니다")
+else:
+    from face_reader import FaceReader
+    print("🔮 Anthropic Claude API를 사용합니다")
 
 # FastAPI 앱 생성
 app = FastAPI(
@@ -41,7 +55,8 @@ async def root():
     return {
         "message": "얼굴 관상 분석 API",
         "status": "running",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "api_provider": API_PROVIDER
     }
 
 
