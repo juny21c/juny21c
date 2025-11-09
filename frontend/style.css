@@ -10,7 +10,9 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
-    color: #333;
+    color: #1F2937;  /* 더 진한 텍스트 (가독성) */
+    font-size: 1.25rem;  /* 기본 글자 크기 20px (60대 최적화) */
+    line-height: 1.8;  /* 줄간격 넓게 */
 }
 
 .container {
@@ -31,7 +33,33 @@ header h1 {
 }
 
 .subtitle {
-    font-size: 1.1rem;
+    font-size: 1.375rem;  /* 22px */
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+/* 사용 횟수 카운터 */
+.usage-counter {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px 25px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.usage-counter p {
+    font-size: 1.25rem;  /* 20px */
+    margin: 5px 0;
+    color: white;
+}
+
+.usage-counter strong {
+    font-size: 1.5rem;  /* 24px */
+    color: #FEF08A;  /* 노란색 강조 */
+}
+
+.share-bonus {
+    font-size: 1.125rem !important;  /* 18px */
     opacity: 0.9;
 }
 
@@ -77,21 +105,25 @@ main {
 }
 
 .upload-text {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 20px;
+    font-size: 1.5rem;  /* 24px - 60대 최적화 */
+    color: #374151;  /* 더 진한 회색 */
+    margin-bottom: 25px;
+    font-weight: 500;
 }
 
 .btn-select {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 12px 30px;
-    font-size: 1rem;
-    border-radius: 25px;
+    padding: 20px 40px;  /* 60대 최적화: 큰 터치 영역 */
+    font-size: 1.5rem;  /* 24px */
+    font-weight: 600;
+    border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     pointer-events: all;
+    min-height: 64px;  /* 최소 높이 보장 */
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .btn-select:hover {
@@ -100,8 +132,8 @@ main {
 }
 
 .upload-hint {
-    font-size: 0.85rem;
-    color: #888;
+    font-size: 1rem;  /* 16px - 약간 키움 */
+    color: #6B7280;
     margin-top: 15px;
 }
 
@@ -141,13 +173,16 @@ main {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 15px 50px;
-    font-size: 1.1rem;
-    border-radius: 30px;
+    padding: 22px 50px;  /* 60대 최적화 */
+    font-size: 1.625rem;  /* 26px */
+    font-weight: 700;
+    border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
-    max-width: 300px;
+    max-width: 400px;
+    min-height: 72px;  /* 큰 터치 영역 */
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
 .btn-analyze:hover {
@@ -203,8 +238,57 @@ main {
 
 .result-section h2 {
     color: #667eea;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: center;
+    font-size: 2rem;  /* 32px - 60대 최적화 */
+}
+
+/* 카카오톡 공유 섹션 */
+.share-section {
+    background: #FEF9C3;  /* 밝은 노란 배경 */
+    border: 2px solid #FDE047;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.share-text {
+    font-size: 1.25rem;  /* 20px */
+    color: #854D0E;  /* 진한 노란/갈색 */
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.share-text strong {
+    font-size: 1.5rem;  /* 24px */
+    color: #CA8A04;
+}
+
+.btn-share-kakao {
+    background: #FEE500;  /* 카카오톡 노란색 */
+    color: #3C1E1E;
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.5rem;  /* 24px */
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+    min-height: 64px;
+    box-shadow: 0 4px 12px rgba(254, 229, 0, 0.4);
+}
+
+.btn-share-kakao:hover {
+    background: #FDD835;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(254, 229, 0, 0.5);
+}
+
+.btn-share-kakao:active {
+    transform: translateY(0);
 }
 
 .result-box {
@@ -216,9 +300,11 @@ main {
 }
 
 #analysisResult {
-    color: #333;
+    color: #1F2937;
     white-space: pre-wrap;
     word-wrap: break-word;
+    font-size: 1.25rem;  /* 20px - 60대 최적화 */
+    line-height: 2;  /* 줄간격 넓게 */
 }
 
 #analysisResult h3 {
@@ -234,14 +320,16 @@ main {
 .btn-retry {
     background: #fff;
     color: #667eea;
-    border: 2px solid #667eea;
-    padding: 12px 30px;
-    font-size: 1rem;
-    border-radius: 25px;
+    border: 3px solid #667eea;
+    padding: 18px 40px;  /* 60대 최적화 */
+    font-size: 1.375rem;  /* 22px */
+    font-weight: 600;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: block;
     margin: 0 auto;
+    min-height: 64px;
 }
 
 .btn-retry:hover {

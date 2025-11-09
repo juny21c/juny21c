@@ -11,6 +11,10 @@
         <header>
             <h1>🔮 AI 얼굴 관상 분석</h1>
             <p class="subtitle">AI가 당신의 얼굴을 보고 관상을 분석해드립니다</p>
+            <div class="usage-counter">
+                <p>남은 분석 횟수: <strong id="remainingCount">1회</strong></p>
+                <p class="share-bonus">💡 친구에게 공유하면 <strong>1회 더!</strong></p>
+            </div>
         </header>
 
         <main>
@@ -19,11 +23,11 @@
                     <input type="file" id="fileInput" accept="image/*" capture="environment" hidden>
                     <div class="upload-content">
                         <div class="upload-icon">📸</div>
-                        <p class="upload-text mobile-text">📱 사진 찍기 또는 선택</p>
-                        <p class="upload-text desktop-text">사진을 선택하거나 드래그하세요</p>
+                        <p class="upload-text mobile-text">📱 얼굴 사진 찍기</p>
+                        <p class="upload-text desktop-text">사진 선택하기</p>
                         <button class="btn-select btn-camera" id="btnCamera">
-                            <span class="mobile-only">📷 사진 찍기</span>
-                            <span class="desktop-only">📁 사진 선택</span>
+                            <span class="mobile-only">📷 내 얼굴 찍기</span>
+                            <span class="desktop-only">📁 사진 고르기</span>
                         </button>
                         <p class="upload-hint">JPG, PNG, GIF, WEBP 형식 지원</p>
                         <p class="mobile-hint">📱 카메라가 자동으로 실행됩니다</p>
@@ -35,7 +39,7 @@
                         <img id="previewImage" alt="미리보기">
                         <button class="btn-remove" id="btnRemove">다른 사진 선택</button>
                     </div>
-                    <button class="btn-analyze" id="btnAnalyze">관상 분석하기</button>
+                    <button class="btn-analyze" id="btnAnalyze">🔮 내 관상 보기</button>
                 </div>
             </div>
 
@@ -46,11 +50,20 @@
             </div>
 
             <div class="result-section" id="resultSection" style="display: none;">
-                <h2>📊 관상 분석 결과</h2>
+                <h2>📊 내 관상 결과</h2>
                 <div class="result-box">
                     <div id="analysisResult"></div>
                 </div>
-                <button class="btn-retry" id="btnRetry">다시 분석하기</button>
+
+                <!-- 카카오톡 공유 버튼 -->
+                <div class="share-section">
+                    <p class="share-text">친구들에게 공유하고 <strong>1회 더</strong> 받으세요!</p>
+                    <button class="btn-share-kakao" id="btnShareKakao">
+                        💬 카카오톡 공유하기
+                    </button>
+                </div>
+
+                <button class="btn-retry" id="btnRetry">다시 해보기</button>
             </div>
 
             <div class="error-section" id="errorSection" style="display: none;">
@@ -69,6 +82,8 @@
         </footer>
     </div>
 
+    <!-- Kakao SDK -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -14,8 +14,8 @@ from dotenv import load_dotenv
 # 환경 변수 로드
 load_dotenv()
 
-# API 제공자 선택 (환경 변수에서 읽기, 기본값: claude)
-API_PROVIDER = os.getenv("API_PROVIDER", "claude").lower()
+# API 제공자 선택 (환경 변수에서 읽기, 기본값: gemini)
+API_PROVIDER = os.getenv("API_PROVIDER", "gemini").lower()
 
 # 선택한 API에 따라 적절한 FaceReader 임포트
 if API_PROVIDER == "gemini":
