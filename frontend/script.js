@@ -4,7 +4,7 @@ const API_BASE_URL = 'http://localhost:8000';
 // DOM 요소
 const fileInput = document.getElementById('fileInput');
 const uploadBox = document.getElementById('uploadBox');
-const btnSelect = document.getElementById('btnSelect');
+const btnCamera = document.getElementById('btnCamera');
 const previewSection = document.getElementById('previewSection');
 const previewImage = document.getElementById('previewImage');
 const btnRemove = document.getElementById('btnRemove');
@@ -21,8 +21,9 @@ let selectedFile = null;
 
 // 초기화
 function init() {
-    // 파일 선택 버튼 클릭
-    btnSelect.addEventListener('click', () => {
+    // 파일 선택/카메라 버튼 클릭
+    btnCamera.addEventListener('click', (e) => {
+        e.stopPropagation(); // 이벤트 버블링 방지
         fileInput.click();
     });
 

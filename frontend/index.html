@@ -16,12 +16,17 @@
         <main>
             <div class="upload-section">
                 <div class="upload-box" id="uploadBox">
-                    <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" hidden>
+                    <input type="file" id="fileInput" accept="image/*" capture="environment" hidden>
                     <div class="upload-content">
                         <div class="upload-icon">📸</div>
-                        <p class="upload-text">사진을 선택하거나 드래그하세요</p>
-                        <button class="btn-select" id="btnSelect">사진 선택</button>
+                        <p class="upload-text mobile-text">📱 사진 찍기 또는 선택</p>
+                        <p class="upload-text desktop-text">사진을 선택하거나 드래그하세요</p>
+                        <button class="btn-select btn-camera" id="btnCamera">
+                            <span class="mobile-only">📷 사진 찍기</span>
+                            <span class="desktop-only">📁 사진 선택</span>
+                        </button>
                         <p class="upload-hint">JPG, PNG, GIF, WEBP 형식 지원</p>
+                        <p class="mobile-hint">📱 카메라가 자동으로 실행됩니다</p>
                     </div>
                 </div>
 

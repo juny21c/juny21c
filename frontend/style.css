@@ -289,20 +289,96 @@ footer p {
     font-size: 0.9rem;
 }
 
-@media (max-width: 600px) {
+/* 모바일/데스크톱 표시 제어 */
+.mobile-only {
+    display: none;
+}
+
+.desktop-only {
+    display: inline;
+}
+
+.mobile-text {
+    display: none;
+}
+
+.desktop-text {
+    display: block;
+}
+
+.mobile-hint {
+    display: none;
+    font-size: 0.85rem;
+    color: #667eea;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    /* 모바일에서만 표시 */
+    .mobile-only {
+        display: inline;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-text {
+        display: block;
+    }
+
+    .desktop-text {
+        display: none;
+    }
+
+    .mobile-hint {
+        display: block;
+    }
+
+    /* 기존 모바일 스타일 */
     header h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
     }
 
     main {
-        padding: 25px;
+        padding: 20px;
+        border-radius: 15px;
     }
 
     .upload-box {
-        padding: 40px 20px;
+        padding: 30px 15px;
     }
 
     .upload-icon {
-        font-size: 3rem;
+        font-size: 3.5rem;
+    }
+
+    .upload-text {
+        font-size: 1.1rem;
+    }
+
+    .btn-select {
+        width: 100%;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+    }
+
+    .btn-analyze {
+        width: 100%;
+        font-size: 1.1rem;
+    }
+
+    .result-box {
+        padding: 20px;
+    }
+
+    footer {
+        font-size: 0.85rem;
     }
 }
