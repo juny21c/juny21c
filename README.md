@@ -3,6 +3,8 @@
 얼굴 사진을 업로드하면 AI가 관상을 봐주는 재미있는 웹사이트입니다!
 
 > 🎓 **완전 초보자이신가요?** [초보자 가이드](./초보자_가이드.md)를 먼저 읽어보세요!
+>
+> 🌐 **무료 서버에 배포하고 싶으신가요?** [무료 서버 배포 가이드](./무료서버_배포가이드.md)를 확인하세요!
 
 ## ⚠️ 이것은 재미로만 봐주세요!
 
@@ -41,15 +43,24 @@
 
 ```
 juny21c/
-├── backend/              # 백엔드 서버
-│   ├── main.py          # FastAPI 메인 서버
-│   ├── face_reader.py   # 관상 분석 로직
-│   ├── requirements.txt # Python 패키지 의존성
-│   └── .env.example     # 환경 변수 예시
-├── frontend/            # 프론트엔드 웹
-│   ├── index.html       # 메인 HTML
-│   ├── style.css        # 스타일시트
-│   └── script.js        # JavaScript 로직
+├── backend/                    # 로컬 실행용 백엔드 서버
+│   ├── main.py                # FastAPI 메인 서버
+│   ├── face_reader.py         # Claude API 관상 분석
+│   ├── face_reader_gemini.py  # Gemini API 관상 분석
+│   ├── requirements.txt       # Python 패키지 의존성
+│   └── .env.example           # 환경 변수 예시
+├── frontend/                  # 로컬 실행용 프론트엔드 웹
+│   ├── index.html             # 메인 HTML
+│   ├── style.css              # 스타일시트
+│   └── script.js              # JavaScript 로직
+├── huggingface/               # 🌐 무료 서버 배포용
+│   ├── app.py                 # Gradio 앱
+│   ├── requirements.txt       # 배포용 패키지
+│   └── README.md              # Hugging Face 설명
+├── start_backend.bat/sh       # 백엔드 실행 스크립트
+├── start_frontend.bat/sh      # 프론트엔드 실행 스크립트
+├── 초보자_가이드.md           # 완전 초보자용 가이드
+├── 무료서버_배포가이드.md     # 무료 배포 가이드
 ├── .gitignore
 └── README.md
 ```
