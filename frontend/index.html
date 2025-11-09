@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 얼굴 관상 분석</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔮 AI 얼굴 관상 분석</h1>
+            <p class="subtitle">AI가 당신의 얼굴을 보고 관상을 분석해드립니다</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-box" id="uploadBox">
+                    <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" hidden>
+                    <div class="upload-content">
+                        <div class="upload-icon">📸</div>
+                        <p class="upload-text">사진을 선택하거나 드래그하세요</p>
+                        <button class="btn-select" id="btnSelect">사진 선택</button>
+                        <p class="upload-hint">JPG, PNG, GIF, WEBP 형식 지원</p>
+                    </div>
+                </div>
+
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-box">
+                        <img id="previewImage" alt="미리보기">
+                        <button class="btn-remove" id="btnRemove">다른 사진 선택</button>
+                    </div>
+                    <button class="btn-analyze" id="btnAnalyze">관상 분석하기</button>
+                </div>
+            </div>
+
+            <div class="loading-section" id="loadingSection" style="display: none;">
+                <div class="spinner"></div>
+                <p>AI가 관상을 분석하고 있습니다...</p>
+                <p class="loading-hint">잠시만 기다려주세요</p>
+            </div>
+
+            <div class="result-section" id="resultSection" style="display: none;">
+                <h2>📊 관상 분석 결과</h2>
+                <div class="result-box">
+                    <div id="analysisResult"></div>
+                </div>
+                <button class="btn-retry" id="btnRetry">다시 분석하기</button>
+            </div>
+
+            <div class="error-section" id="errorSection" style="display: none;">
+                <div class="error-box">
+                    <div class="error-icon">⚠️</div>
+                    <h3>오류가 발생했습니다</h3>
+                    <p id="errorMessage"></p>
+                    <button class="btn-retry" id="btnErrorRetry">다시 시도</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>⚠️ 이 서비스는 재미와 오락을 목적으로 만들어졌습니다</p>
+            <p>관상 분석 결과는 참고용이며 과학적 근거가 없습니다</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
