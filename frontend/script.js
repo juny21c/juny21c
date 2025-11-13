@@ -2,7 +2,7 @@
 const API_BASE_URL = 'http://localhost:8000';
 
 // Kakao SDK 초기화 (발급받은 JavaScript 키로 변경!)
-const KAKAO_JS_KEY = 'YOUR_KAKAO_JAVASCRIPT_KEY';  // TODO: 실제 키로 변경
+const KAKAO_JS_KEY = '59427f98d8afe38d833c405563436286';
 
 // DOM 요소
 const fileInput = document.getElementById('fileInput');
