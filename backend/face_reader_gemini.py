@@ -30,14 +30,13 @@ class FaceReaderGemini:
         except Exception as e:
             print(f"⚠️ 모델 목록 조회 실패: {e}")
 
-        # 지원되는 모델 시도 (우선순위대로)
+        # 지원되는 모델 시도 (우선순위대로) - 2025년 최신 모델
         model_candidates = [
-            'models/gemini-1.5-flash',
-            'models/gemini-1.5-pro',
-            'models/gemini-pro-vision',
-            'gemini-1.5-flash',
-            'gemini-pro-vision',
-            'gemini-pro'
+            'models/gemini-2.5-flash',
+            'models/gemini-2.0-flash',
+            'models/gemini-flash-latest',
+            'models/gemini-2.5-pro',
+            'models/gemini-pro-latest',
         ]
 
         model_name = None
