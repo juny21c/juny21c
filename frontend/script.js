@@ -220,54 +220,90 @@ function resetUpload() {
     errorSection.style.display = 'none';
 }
 
-// 이미지 압축 함수 (성능 최적화)
+// 이미지 압축 함수 (성능 최적화 + 에러 핸들링)
 async function compressImage(file, maxWidth = 800, quality = 0.8) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const reader = new FileReader();
+
+        reader.onerror = () => {
+            console.warn('파일 읽기 실패, 원본 사용');
+            resolve(file); // 에러 시 원본 파일 사용
+        };
+
         reader.onload = (e) => {
             const img = new Image();
-            img.onload = () => {
-                // 이미 작으면 그대로 사용
-                if (img.width <= maxWidth && img.height <= maxWidth) {
-                    resolve(file);
-                    return;
-                }
 
-                // 비율 유지하며 리사이즈
-                let width = img.width;
-                let height = img.height;
-
-                if (width > height) {
-                    if (width > maxWidth) {
-                        height = (height * maxWidth) / width;
-                        width = maxWidth;
-                    }
-                } else {
-                    if (height > maxWidth) {
-                        width = (width * maxWidth) / height;
-                        height = maxWidth;
-                    }
-                }
-
-                // Canvas로 리사이즈
-                const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                // Blob으로 변환
-                canvas.toBlob((blob) => {
-                    const compressedFile = new File([blob], file.name, {
-                        type: 'image/jpeg',
-                        lastModified: Date.now()
-                    });
-                    console.log(`이미지 압축: ${(file.size / 1024).toFixed(0)}KB → ${(compressedFile.size / 1024).toFixed(0)}KB`);
-                    resolve(compressedFile);
-                }, 'image/jpeg', quality);
+            img.onerror = () => {
+                console.warn('이미지 로드 실패, 원본 사용');
+                resolve(file); // 에러 시 원본 파일 사용
             };
+
+            img.onload = () => {
+                try {
+                    // 이미 작으면 그대로 사용
+                    if (img.width <= maxWidth && img.height <= maxWidth) {
+                        console.log('이미지가 이미 작음, 원본 사용');
+                        resolve(file);
+                        return;
+                    }
+
+                    // 비율 유지하며 리사이즈
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = (height * maxWidth) / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxWidth) {
+                            width = (width * maxWidth) / height;
+                            height = maxWidth;
+                        }
+                    }
+
+                    // Canvas로 리사이즈
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+
+                    // 배경을 흰색으로 (투명도 제거)
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, width, height);
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Blob으로 변환
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            console.warn('Blob 생성 실패, 원본 사용');
+                            resolve(file);
+                            return;
+                        }
+
+                        try {
+                            const compressedFile = new File([blob], file.name, {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            });
+                            console.log(`✅ 이미지 압축: ${(file.size / 1024).toFixed(0)}KB → ${(compressedFile.size / 1024).toFixed(0)}KB`);
+                            resolve(compressedFile);
+                        } catch (error) {
+                            console.warn('파일 생성 실패, 원본 사용:', error);
+                            resolve(file);
+                        }
+                    }, 'image/jpeg', quality);
+
+                } catch (error) {
+                    console.warn('압축 처리 실패, 원본 사용:', error);
+                    resolve(file);
+                }
+            };
+
             img.src = e.target.result;
         };
+
         reader.readAsDataURL(file);
     });
 }
