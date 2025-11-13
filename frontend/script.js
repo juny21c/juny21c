@@ -326,8 +326,8 @@ async function analyzeImage() {
     loadingSection.style.display = 'block';
 
     try {
-        // 이미지 압축 (성능 최적화)
-        const compressedFile = await compressImage(selectedFile);
+        // 이미지 압축 (더 강력하게: 600px, 60% 품질)
+        const compressedFile = await compressImage(selectedFile, 600, 0.6);
 
         // FormData 생성
         const formData = new FormData();

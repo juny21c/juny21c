@@ -64,28 +64,38 @@ class FaceReaderGemini:
             관상 분석 결과 딕셔너리
         """
         try:
-            # 이미지 로드
+            # 이미지 로드 및 최적화
             image = Image.open(image_path)
 
-            # 프롬프트 생성 (전문 관상가 컨셉, 범용적)
-            prompt = """당신은 30년 경력의 전문 관상가입니다. 이 얼굴을 보고 관상을 풀이해주세요.
+            # 이미지 리사이즈 (512px max) - 속도 최적화
+            max_size = 512
+            if image.width > max_size or image.height > max_size:
+                image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+                print(f"✅ 이미지 리사이즈: {image.width}x{image.height}")
+
+            # RGB 모드로 변환 (투명도 제거)
+            if image.mode != 'RGB':
+                image = image.convert('RGB')
+
+            # 프롬프트 생성 (간결하게 최적화)
+            prompt = """당신은 30년 경력 관상가입니다. 이 얼굴을 보고 간결하게 풀이해주세요.
 
 **성격과 기질**
-타고난 성품과 성격적 특징 (2-3줄, 구체적으로)
+타고난 성품과 특징 (2줄)
 
 **재물운**
-금전, 사업, 투자운과 재물 관리 조언 (2-3줄)
+금전, 사업운과 조언 (2줄)
 
 **인간관계운**
-대인관계, 리더십, 인복 (2-3줄)
+대인관계, 인복 (2줄)
 
 **건강과 활력**
-건강 상태와 주의할 점 (2줄)
+건강 상태와 주의점 (1-2줄)
 
 **종합 운세**
-전반적인 운의 흐름과 삶의 조언 (3-4줄, 희망적으로)
+전반적 운세와 삶의 조언 (2-3줄, 희망적으로)
 
-전문 관상가의 경험을 바탕으로 구체적이고 실질적인 조언을 해주세요. 긍정적이되 과장하지 말고, 따뜻하고 격려하는 어조로 작성하세요."""
+간결하고 구체적으로, 따뜻한 어조로 작성하세요."""
 
             # Gemini API 호출 (safety settings 추가)
             safety_settings = [
@@ -107,9 +117,16 @@ class FaceReaderGemini:
                 },
             ]
 
+            # 생성 설정 (속도 최적화)
+            generation_config = {
+                "max_output_tokens": 600,  # 짧게 제한
+                "temperature": 0.7,  # 약간 창의적
+            }
+
             response = self.model.generate_content(
                 [prompt, image],
-                safety_settings=safety_settings
+                safety_settings=safety_settings,
+                generation_config=generation_config
             )
 
             return {
