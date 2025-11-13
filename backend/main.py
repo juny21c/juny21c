@@ -127,9 +127,18 @@ async def analyze_face(file: UploadFile = File(...)):
                 "model": result.get("model", "unknown")
             })
         else:
+            # 사용자 친화적인 에러 메시지
+            error_msg = result.get('error', '알 수 없는 오류')
+
+            # 할당량 초과 에러 처리
+            if '429' in str(error_msg) or 'quota' in str(error_msg).lower():
+                user_message = "잠시 후 다시 시도해주세요.\n(많은 분들이 이용 중입니다. 1-2분 후 다시 시도하시면 됩니다)"
+            else:
+                user_message = f"관상 풀이 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요."
+
             raise HTTPException(
                 status_code=500,
-                detail=f"관상 분석 실패: {result.get('error', '알 수 없는 오류')}"
+                detail=user_message
             )
 
     except HTTPException:
