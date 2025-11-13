@@ -46,11 +46,18 @@
             <div class="loading-section" id="loadingSection" style="display: none;">
                 <div class="spinner"></div>
                 <p>AI가 관상을 분석하고 있습니다...</p>
-                <p class="loading-hint">잠시만 기다려주세요</p>
+                <p class="loading-hint">최신 AI 모델로 분석 중입니다 (30-60초 소요)</p>
             </div>
 
             <div class="result-section" id="resultSection" style="display: none;">
                 <h2>📊 내 관상 결과</h2>
+
+                <!-- 분석한 사진 표시 -->
+                <div class="analyzed-image-box">
+                    <img id="analyzedImage" src="" alt="분석한 사진">
+                </div>
+
+                <!-- 분석 결과 -->
                 <div class="result-box">
                     <div id="analysisResult"></div>
                 </div>

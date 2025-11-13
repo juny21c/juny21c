@@ -269,13 +269,30 @@ async function analyzeImage() {
 
 // 결과 표시
 function displayResult(analysis) {
-    // 마크다운 스타일 텍스트를 HTML로 변환 (간단한 변환)
+    // 분석한 이미지 표시 (previewImage의 src 복사)
+    const analyzedImage = document.getElementById('analyzedImage');
+    if (analyzedImage && previewImage.src) {
+        analyzedImage.src = previewImage.src;
+    }
+
+    // 마크다운 스타일 텍스트를 HTML로 변환 (개선된 변환)
     let htmlContent = analysis
         .replace(/\*\*(.*?)\*\*/g, '<h3>$1</h3>') // **제목** -> <h3>
-        .replace(/\n\n/g, '</p><p>') // 단락 구분
-        .replace(/\n/g, '<br>'); // 줄바꿈
+        .replace(/\n\n+/g, '</p><p>') // 여러 줄바꿈 -> 단락 구분
+        .replace(/\n/g, '<br>') // 단일 줄바꿈 -> <br>
+        .trim(); // 앞뒤 공백 제거
 
-    htmlContent = '<p>' + htmlContent + '</p>';
+    // 빈 단락 제거
+    htmlContent = htmlContent.replace(/<p>\s*<\/p>/g, '');
+    htmlContent = htmlContent.replace(/<p>\s*<br>\s*<\/p>/g, '');
+
+    // p 태그로 감싸기
+    if (!htmlContent.startsWith('<p>')) {
+        htmlContent = '<p>' + htmlContent;
+    }
+    if (!htmlContent.endsWith('</p>')) {
+        htmlContent = htmlContent + '</p>';
+    }
 
     analysisResult.innerHTML = htmlContent;
     resultSection.style.display = 'block';

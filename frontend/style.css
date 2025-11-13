@@ -470,3 +470,43 @@ footer p {
         font-size: 0.85rem;
     }
 }
+
+/* 분석한 사진 표시 */
+.analyzed-image-box {
+    margin: 25px 0;
+    text-align: center;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.analyzed-image-box img {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 결과 텍스트 포맷팅 개선 */
+#analysisResult h3 {
+    color: #2D3748;
+    font-size: 1.4rem;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #667EEA;
+    font-weight: 700;
+}
+
+#analysisResult p {
+    line-height: 1.9;
+    margin-bottom: 15px;
+    color: #4A5568;
+    text-align: left;
+}
+
+#analysisResult strong {
+    color: #2D3748;
+    font-weight: 700;
+}
