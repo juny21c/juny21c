@@ -8,7 +8,8 @@ import uuid
 from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 
 # 환경 변수 로드
@@ -45,19 +46,31 @@ app.add_middleware(
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
+# 프론트엔드 디렉토리 설정
+FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
+
 # FaceReader 인스턴스 생성
 face_reader = FaceReader()
+
+# 정적 파일 서빙 (CSS, JS, 이미지 등)
+if FRONTEND_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
 
 @app.get("/")
 async def root():
-    """API 상태 확인"""
-    return {
-        "message": "얼굴 관상 분석 API",
-        "status": "running",
-        "version": "1.0.0",
-        "api_provider": API_PROVIDER
-    }
+    """프론트엔드 HTML 서빙"""
+    index_path = FRONTEND_DIR / "index.html"
+    if index_path.exists():
+        return FileResponse(index_path)
+    else:
+        # 프론트엔드가 없으면 API 정보 반환
+        return {
+            "message": "얼굴 관상 분석 API",
+            "status": "running",
+            "version": "1.0.0",
+            "api_provider": API_PROVIDER
+        }
 
 
 @app.get("/health")

@@ -1,5 +1,7 @@
-// API 기본 URL (개발 환경에 맞게 수정)
-const API_BASE_URL = 'http://localhost:8000';
+// API 기본 URL (환경에 따라 자동 감지)
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'  // 로컬 개발 환경
+    : window.location.origin;   // 프로덕션 환경 (같은 도메인)
 
 // Kakao SDK 초기화 (발급받은 JavaScript 키로 변경!)
 const KAKAO_JS_KEY = '59427f98d8afe38d833c405563436286';
