@@ -7,9 +7,11 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
 const KAKAO_JS_KEY = '59427f98d8afe38d833c405563436286';
 
 // DOM 요소
-const fileInput = document.getElementById('fileInput');
+const cameraInput = document.getElementById('cameraInput');
+const galleryInput = document.getElementById('galleryInput');
 const uploadBox = document.getElementById('uploadBox');
 const btnCamera = document.getElementById('btnCamera');
+const btnGallery = document.getElementById('btnGallery');
 const previewSection = document.getElementById('previewSection');
 const previewImage = document.getElementById('previewImage');
 const btnRemove = document.getElementById('btnRemove');
@@ -114,19 +116,21 @@ function init() {
     // 남은 횟수 UI 업데이트
     updateRemainingUI();
 
-    // 파일 선택/카메라 버튼 클릭
+    // 카메라 버튼 클릭
     btnCamera.addEventListener('click', (e) => {
-        e.stopPropagation(); // 이벤트 버블링 방지
-        fileInput.click();
+        e.stopPropagation();
+        cameraInput.click();
     });
 
-    // 업로드 박스 클릭
-    uploadBox.addEventListener('click', () => {
-        fileInput.click();
+    // 갤러리 버튼 클릭
+    btnGallery.addEventListener('click', (e) => {
+        e.stopPropagation();
+        galleryInput.click();
     });
 
-    // 파일 선택
-    fileInput.addEventListener('change', handleFileSelect);
+    // 파일 선택 (두 input 모두)
+    cameraInput.addEventListener('change', handleFileSelect);
+    galleryInput.addEventListener('change', handleFileSelect);
 
     // 드래그 앤 드롭
     uploadBox.addEventListener('dragover', handleDragOver);
@@ -207,12 +211,65 @@ function validateAndPreviewFile(file) {
 // 업로드 초기화
 function resetUpload() {
     selectedFile = null;
-    fileInput.value = '';
+    cameraInput.value = '';
+    galleryInput.value = '';
     uploadBox.style.display = 'block';
     previewSection.style.display = 'none';
     loadingSection.style.display = 'none';
     resultSection.style.display = 'none';
     errorSection.style.display = 'none';
+}
+
+// 이미지 압축 함수 (성능 최적화)
+async function compressImage(file, maxWidth = 800, quality = 0.8) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                // 이미 작으면 그대로 사용
+                if (img.width <= maxWidth && img.height <= maxWidth) {
+                    resolve(file);
+                    return;
+                }
+
+                // 비율 유지하며 리사이즈
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height = (height * maxWidth) / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxWidth) {
+                        width = (width * maxWidth) / height;
+                        height = maxWidth;
+                    }
+                }
+
+                // Canvas로 리사이즈
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Blob으로 변환
+                canvas.toBlob((blob) => {
+                    const compressedFile = new File([blob], file.name, {
+                        type: 'image/jpeg',
+                        lastModified: Date.now()
+                    });
+                    console.log(`이미지 압축: ${(file.size / 1024).toFixed(0)}KB → ${(compressedFile.size / 1024).toFixed(0)}KB`);
+                    resolve(compressedFile);
+                }, 'image/jpeg', quality);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
 // 이미지 분석
@@ -233,9 +290,12 @@ async function analyzeImage() {
     loadingSection.style.display = 'block';
 
     try {
+        // 이미지 압축 (성능 최적화)
+        const compressedFile = await compressImage(selectedFile);
+
         // FormData 생성
         const formData = new FormData();
-        formData.append('file', selectedFile);
+        formData.append('file', compressedFile);
 
         // API 호출
         const response = await fetch(`${API_BASE_URL}/api/analyze`, {

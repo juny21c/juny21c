@@ -20,17 +20,26 @@
         <main>
             <div class="upload-section">
                 <div class="upload-box" id="uploadBox">
-                    <input type="file" id="fileInput" accept="image/*" capture="environment" hidden>
+                    <!-- 카메라로 찍기용 input -->
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+                    <!-- 앨범에서 선택용 input -->
+                    <input type="file" id="galleryInput" accept="image/*" hidden>
+
                     <div class="upload-content">
                         <div class="upload-icon">📸</div>
-                        <p class="upload-text mobile-text">📱 얼굴 사진 찍기</p>
-                        <p class="upload-text desktop-text">사진 선택하기</p>
-                        <button class="btn-select btn-camera" id="btnCamera">
-                            <span class="mobile-only">📷 내 얼굴 찍기</span>
-                            <span class="desktop-only">📁 사진 고르기</span>
-                        </button>
+                        <p class="upload-text">사진을 올려주세요</p>
+
+                        <!-- 두 개 버튼으로 분리 -->
+                        <div class="button-group">
+                            <button class="btn-select btn-camera" id="btnCamera">
+                                📷 사진 찍기
+                            </button>
+                            <button class="btn-select btn-gallery" id="btnGallery">
+                                📁 사진 선택
+                            </button>
+                        </div>
+
                         <p class="upload-hint">JPG, PNG, GIF, WEBP 형식 지원</p>
-                        <p class="mobile-hint">📱 카메라가 자동으로 실행됩니다</p>
                     </div>
                 </div>
 

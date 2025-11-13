@@ -131,6 +131,29 @@ main {
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
+/* 버튼 그룹 스타일 */
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.button-group .btn-select {
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+}
+
+.btn-camera {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-gallery {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
 .upload-hint {
     font-size: 1rem;  /* 16px - 약간 키움 */
     color: #6B7280;
