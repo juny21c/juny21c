@@ -22,8 +22,8 @@ class FaceReaderGemini:
             raise ValueError("GOOGLE_API_KEY 환경 변수가 설정되지 않았습니다.")
 
         genai.configure(api_key=api_key)
-        # gemini-1.5-flash-latest 사용 (최신 안정 버전)
-        self.model = genai.GenerativeModel('gemini-1.5-flash-latest')
+        # gemini-1.5-flash 사용 (suffix 없이)
+        self.model = genai.GenerativeModel('gemini-1.5-flash')
 
     def analyze_face(self, image_path: str) -> Dict[str, Any]:
         """
@@ -55,13 +55,35 @@ class FaceReaderGemini:
 각 항목마다 구체적이고 긍정적인 해석을 제공하되, 너무 과장되지 않도록 균형잡힌 시각으로 작성해주세요.
 한국어로 친근하고 이해하기 쉽게 설명해주세요."""
 
-            # Gemini API 호출
-            response = self.model.generate_content([prompt, image])
+            # Gemini API 호출 (safety settings 추가)
+            safety_settings = [
+                {
+                    "category": "HARM_CATEGORY_HARASSMENT",
+                    "threshold": "BLOCK_NONE"
+                },
+                {
+                    "category": "HARM_CATEGORY_HATE_SPEECH",
+                    "threshold": "BLOCK_NONE"
+                },
+                {
+                    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                    "threshold": "BLOCK_NONE"
+                },
+                {
+                    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                    "threshold": "BLOCK_NONE"
+                },
+            ]
+
+            response = self.model.generate_content(
+                [prompt, image],
+                safety_settings=safety_settings
+            )
 
             return {
                 "success": True,
                 "analysis": response.text,
-                "model": "gemini-1.5-flash-latest"
+                "model": "gemini-1.5-flash"
             }
 
         except Exception as e:
