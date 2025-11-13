@@ -22,8 +22,8 @@ class FaceReaderGemini:
             raise ValueError("GOOGLE_API_KEY 환경 변수가 설정되지 않았습니다.")
 
         genai.configure(api_key=api_key)
-        # gemini-1.5-flash 사용 (suffix 없이)
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        # gemini-pro-vision 사용 (이미지 분석 지원 모델)
+        self.model = genai.GenerativeModel('gemini-pro-vision')
 
     def analyze_face(self, image_path: str) -> Dict[str, Any]:
         """
@@ -83,7 +83,7 @@ class FaceReaderGemini:
             return {
                 "success": True,
                 "analysis": response.text,
-                "model": "gemini-1.5-flash"
+                "model": "gemini-pro-vision"
             }
 
         except Exception as e:
