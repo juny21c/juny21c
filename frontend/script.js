@@ -72,9 +72,9 @@ function shareKakao() {
     Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
-            title: '🔮 AI 얼굴 관상 분석',
-            description: '내 관상을 AI가 분석해줬어요! 정말 신기해요! 당신도 해보세요!',
-            imageUrl: 'https://via.placeholder.com/800x400.png?text=AI+Face+Reading',  // TODO: 실제 이미지로 변경
+            title: '🔮 전문 관상 풀이',
+            description: '30년 경력 관상가가 내 관상을 풀이해줬어요! 정말 신기해요! 당신도 해보세요!',
+            imageUrl: 'https://via.placeholder.com/800x400.png?text=관상풀이',  // TODO: 실제 이미지로 변경
             link: {
                 mobileWebUrl: window.location.href,
                 webUrl: window.location.href
