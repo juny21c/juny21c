@@ -133,11 +133,11 @@ async def analyze_face(file: UploadFile = File(...)):
 
             # 할당량 초과 에러 처리
             if '429' in str(error_msg) or 'quota' in str(error_msg).lower() or 'resource_exhausted' in str(error_msg).lower():
-                user_message = "잠시 후 다시 시도해주세요.\n(많은 분들이 이용 중입니다. 1-2분 후 다시 시도하시면 됩니다)"
-            elif 'content' in str(error_msg).lower() and 'blocked' in str(error_msg).lower():
-                user_message = "이미지 분석이 제한되었습니다.\n다른 사진으로 시도해주세요."
+                user_message = "⏰ 잠시 후 다시 시도해주세요.\n(많은 분들이 이용 중입니다. 1-2분 후 다시 시도하시면 됩니다)"
+            elif 'SAFETY_BLOCK' in str(error_msg) or ('content' in str(error_msg).lower() and 'blocked' in str(error_msg).lower()):
+                user_message = "🚫 죄송합니다. 이 사진은 분석이 어렵습니다.\n\n다른 사진으로 시도해주세요.\n(선명한 정면 얼굴 사진을 권장합니다)"
             else:
-                user_message = f"관상 풀이 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.\n\n기술 정보: {error_msg[:100]}"
+                user_message = f"⚠️ 관상 풀이 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요."
 
             raise HTTPException(
                 status_code=500,

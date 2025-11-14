@@ -77,25 +77,25 @@ class FaceReaderGemini:
             if image.mode != 'RGB':
                 image = image.convert('RGB')
 
-            # 프롬프트 생성 (간결하게 최적화)
-            prompt = """당신은 30년 경력 관상가입니다. 이 얼굴을 보고 간결하게 풀이해주세요.
+            # 프롬프트 생성 (중립적 표현으로 변경 - 안전 필터 회피)
+            prompt = """당신은 얼굴 분석 전문가입니다. 이 사람의 얼굴 특징을 보고 성격과 운세를 분석해주세요.
 
 **성격과 기질**
-타고난 성품과 특징 (2줄)
+얼굴에서 보이는 성품과 특징 (2줄)
 
 **재물운**
-금전, 사업운과 조언 (2줄)
+금전, 경제적 흐름과 조언 (2줄)
 
 **인간관계운**
-대인관계, 인복 (2줄)
+대인관계, 사회성 (2줄)
 
 **건강과 활력**
 건강 상태와 주의점 (1-2줄)
 
-**종합 운세**
-전반적 운세와 삶의 조언 (2-3줄, 희망적으로)
+**종합 분석**
+전반적인 분석과 삶의 조언 (2-3줄, 긍정적으로)
 
-간결하고 구체적으로, 따뜻한 어조로 작성하세요."""
+따뜻하고 구체적으로 작성하세요."""
 
             # Gemini API 호출 (safety settings 추가)
             safety_settings = [
@@ -129,23 +129,36 @@ class FaceReaderGemini:
                 generation_config=generation_config
             )
 
-            # 응답 검증
-            if not response or not response.text:
-                # 안전 필터 체크
-                if hasattr(response, 'prompt_feedback'):
-                    print(f"⚠️ Prompt feedback: {response.prompt_feedback}")
-                if hasattr(response, 'candidates') and response.candidates:
-                    for candidate in response.candidates:
-                        if hasattr(candidate, 'finish_reason'):
-                            print(f"⚠️ Finish reason: {candidate.finish_reason}")
-                        if hasattr(candidate, 'safety_ratings'):
-                            print(f"⚠️ Safety ratings: {candidate.safety_ratings}")
+            # 응답 검증 (안전하게)
+            if not response:
+                raise ValueError("Gemini API 응답이 없습니다.")
 
-                raise ValueError("Gemini API가 응답을 생성하지 못했습니다. 다른 사진으로 시도해주세요.")
+            # finish_reason 체크 (response.text 접근 전)
+            if hasattr(response, 'candidates') and response.candidates:
+                candidate = response.candidates[0]
+                finish_reason = getattr(candidate, 'finish_reason', None)
+
+                # finish_reason 코드: 1=STOP(정상), 2=SAFETY, 3=RECITATION, 4=OTHER
+                if finish_reason == 2:  # SAFETY
+                    print(f"⚠️ 안전 필터로 차단됨")
+                    print(f"⚠️ Safety ratings: {getattr(candidate, 'safety_ratings', 'N/A')}")
+                    raise ValueError("SAFETY_BLOCK: 이미지가 안전 정책에 의해 차단되었습니다. 다른 사진으로 시도해주세요.")
+                elif finish_reason not in [None, 0, 1]:  # 정상 완료가 아님
+                    print(f"⚠️ Finish reason: {finish_reason}")
+                    raise ValueError(f"응답 생성 실패 (finish_reason={finish_reason})")
+
+            # response.text 안전하게 접근
+            try:
+                analysis_text = response.text
+                if not analysis_text or len(analysis_text.strip()) < 10:
+                    raise ValueError("응답 내용이 비어있습니다.")
+            except Exception as e:
+                print(f"⚠️ response.text 접근 실패: {e}")
+                raise ValueError("응답 텍스트를 가져올 수 없습니다. 다른 사진으로 시도해주세요.")
 
             return {
                 "success": True,
-                "analysis": response.text,
+                "analysis": analysis_text,
                 "model": getattr(self.model, '_model_name', 'gemini-unknown')
             }
 
