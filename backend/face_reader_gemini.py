@@ -129,6 +129,20 @@ class FaceReaderGemini:
                 generation_config=generation_config
             )
 
+            # 응답 검증
+            if not response or not response.text:
+                # 안전 필터 체크
+                if hasattr(response, 'prompt_feedback'):
+                    print(f"⚠️ Prompt feedback: {response.prompt_feedback}")
+                if hasattr(response, 'candidates') and response.candidates:
+                    for candidate in response.candidates:
+                        if hasattr(candidate, 'finish_reason'):
+                            print(f"⚠️ Finish reason: {candidate.finish_reason}")
+                        if hasattr(candidate, 'safety_ratings'):
+                            print(f"⚠️ Safety ratings: {candidate.safety_ratings}")
+
+                raise ValueError("Gemini API가 응답을 생성하지 못했습니다. 다른 사진으로 시도해주세요.")
+
             return {
                 "success": True,
                 "analysis": response.text,
@@ -136,6 +150,10 @@ class FaceReaderGemini:
             }
 
         except Exception as e:
+            import traceback
+            error_detail = traceback.format_exc()
+            print(f"❌ 관상 분석 에러: {str(e)}")
+            print(f"📋 전체 에러 로그:\n{error_detail}")
             return {
                 "success": False,
                 "error": str(e),
