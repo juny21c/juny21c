@@ -77,25 +77,25 @@ class FaceReaderGemini:
             if image.mode != 'RGB':
                 image = image.convert('RGB')
 
-            # 프롬프트 생성 (안전 필터 회피 - 완전 중립적 표현)
-            prompt = """You are a personality analyst. Based on this person's facial features and appearance, provide a warm personality assessment in Korean.
+            # 프롬프트 생성 (원래 작동하던 프롬프트로 복구)
+            prompt = """당신은 30년 경력의 전문 관상가입니다. 이 얼굴을 보고 관상을 풀이해주세요.
 
 **성격과 기질**
-외모에서 느껴지는 성품과 성격적 특성 (2-3줄)
+타고난 성품과 성격적 특징 (2-3줄, 구체적으로)
 
-**경제적 성향**
-재무 관리와 금전적 의사결정 스타일 (2줄)
+**재물운**
+금전, 사업, 투자운과 재물 관리 조언 (2-3줄)
 
-**사회적 성향**
-대인관계 특성과 커뮤니케이션 스타일 (2줄)
+**인간관계운**
+대인관계, 리더십, 인복 (2-3줄)
 
-**활력과 에너지**
-전반적인 에너지 수준과 라이프스타일 (2줄)
+**건강과 활력**
+건강 상태와 주의할 점 (2줄)
 
-**종합 평가**
-긍정적이고 따뜻한 격려의 메시지 (3줄)
+**종합 운세**
+전반적인 운의 흐름과 삶의 조언 (3-4줄, 희망적으로)
 
-Write in Korean with a warm, supportive tone. Focus on positive traits and constructive insights."""
+전문 관상가의 경험을 바탕으로 구체적이고 실질적인 조언을 해주세요. 긍정적이되 과장하지 말고, 따뜻하고 격려하는 어조로 작성하세요."""
 
             # Gemini API 호출 (safety settings 추가)
             safety_settings = [
