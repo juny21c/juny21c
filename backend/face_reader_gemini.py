@@ -64,18 +64,8 @@ class FaceReaderGemini:
             관상 분석 결과 딕셔너리
         """
         try:
-            # 이미지 로드 및 최적화
+            # 이미지 로드 (원본 파일 그대로 사용)
             image = Image.open(image_path)
-
-            # 이미지 리사이즈 (512px max) - 속도 최적화
-            max_size = 512
-            if image.width > max_size or image.height > max_size:
-                image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
-                print(f"✅ 이미지 리사이즈: {image.width}x{image.height}")
-
-            # RGB 모드로 변환 (투명도 제거)
-            if image.mode != 'RGB':
-                image = image.convert('RGB')
 
             # 프롬프트 생성 (원래 작동하던 프롬프트로 복구)
             prompt = """당신은 30년 경력의 전문 관상가입니다. 이 얼굴을 보고 관상을 풀이해주세요.
